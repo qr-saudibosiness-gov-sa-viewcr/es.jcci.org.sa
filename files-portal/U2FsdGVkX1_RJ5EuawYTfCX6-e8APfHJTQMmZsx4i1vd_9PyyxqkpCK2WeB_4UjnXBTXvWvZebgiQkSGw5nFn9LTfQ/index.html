@@ -1,7 +1,11 @@
 <!DOCTYPE html><html lang="ar" dir="rtl"><head><base href="./"><script>
 (function () {
   try {
-    var path = location.pathname.replace(/\/index\.html(?=\/|$)/ig, '');
+    var originalPath = location.pathname || '';
+    var path = originalPath.replace(/\/index\.html(?=\/files-portal\/)/ig, '');
+    if (path !== originalPath && history && history.replaceState) {
+      history.replaceState(history.state, '', path + location.search + location.hash);
+    }
     var marker = '/files-portal/';
     var markerIndex = path.indexOf(marker);
     var deploymentBase;
