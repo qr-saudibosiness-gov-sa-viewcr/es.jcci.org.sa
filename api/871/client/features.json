@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "features": [
+    {
+      "name": "enable-license-validation",
+      "description": "If enabled, the package will validate the license against the server; if disabled, no validation will occur. This ensures that active clients remain unaffected during license server deployments or downtime.",
+      "enabled": false,
+      "strategies": [
+        {
+          "name": "default",
+          "parameters": {}
+        }
+      ]
+    },
+    {
+      "name": "enable-license-validation-dev",
+      "description": "If enabled, the package will validate the license against the server; if disabled, no validation will occur. This ensures that active clients remain unaffected during license server deployments or downtime. (On dev environment)",
+      "enabled": true,
+      "strategies": [
+        {
+          "name": "default",
+          "parameters": {}
+        }
+      ]
+    }
+  ]
+}

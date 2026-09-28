@@ -1,0 +1,12 @@
+ROOT BEHAVIOR
+- Opening the domain/root keeps the address unchanged and shows the viewer with no document data.
+- Opening /files-portal/TOKEN loads the JSON + PDF mapped to that TOKEN.
+
+ADD A DOCUMENT
+1) Put both files in /data with the same base name:
+   12000000.json
+   12000000.pdf
+2) Add the token mapping to /data/routes.json:
+   "TOKEN_HERE": "12000000"
+3) Open:
+   /files-portal/TOKEN_HERE

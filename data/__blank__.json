@@ -1,0 +1,19 @@
+{
+  "succeeded": true,
+  "message": "",
+  "errors": [],
+  "data": {
+    "documentNumber": "",
+    "documentStatus": 1,
+    "documentStatusTitle": "",
+    "facilityTitle": "",
+    "created": "",
+    "contentList": [],
+    "subscriptionNumber": "",
+    "unified700Number": "",
+    "fileType": ".pdf",
+    "applicantName": "",
+    "facilityCrNumber": "",
+    "serviceId": 11
+  }
+}

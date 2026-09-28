@@ -1,0 +1,19 @@
+{
+  "succeeded": true,
+  "message": "",
+  "errors": [],
+  "data": {
+    "documentNumber": "11907475",
+    "documentStatus": 1,
+    "documentStatusTitle": "سارية",
+    "facilityTitle": "شركة حاشي الدولية للصناعة",
+    "created": "2026-07-14T20:06:05.219369",
+    "contentList": [],
+    "subscriptionNumber": "605378",
+    "unified700Number": "7039459537",
+    "fileType": ".pdf",
+    "applicantName": "عبد القادر عبدالله حاشي فارح",
+    "facilityCrNumber": 4030605545,
+    "serviceId": 11
+  }
+}
