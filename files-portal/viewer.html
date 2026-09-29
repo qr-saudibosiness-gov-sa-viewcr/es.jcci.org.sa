@@ -1,4 +1,23 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><base id="app-base" href="/"><script>
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><script>
+(function () {
+  // GitHub Pages dynamic-route bridge: 404.html opens viewer.html with __route,
+  // then we restore the clean /files-portal/<token> URL before the app/router starts.
+  try {
+    var params = new URLSearchParams(location.search || '');
+    var routeToken = params.get('__route');
+    if (!routeToken) return;
+
+    var path = decodeURIComponent(location.pathname || '');
+    var marker = '/files-portal/';
+    var at = path.indexOf(marker);
+    if (at < 0) return;
+
+    var deploymentBase = path.slice(0, at).replace(/\/+$/, '');
+    var cleanPath = (deploymentBase || '') + marker + encodeURIComponent(routeToken);
+    history.replaceState(history.state, '', cleanPath);
+  } catch (_) {}
+})();
+</script><base id="app-base" href="/"><script>
 (function () {
   try {
     function cleanPath(path) {
