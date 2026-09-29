@@ -1,0 +1,159 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><base id="app-base" href="/"><script>
+(function () {
+  try {
+    function cleanPath(path) {
+      return String(path || '').replace(/\/index\.html(?=\/files-portal(?:\/|$))/ig, '');
+    }
+
+    function cleanHistoryUrl(url) {
+      if (url == null) return url;
+      try {
+        var parsed = new URL(String(url), location.href);
+        parsed.pathname = cleanPath(parsed.pathname);
+        if (parsed.origin === location.origin) {
+          return parsed.pathname + parsed.search + parsed.hash;
+        }
+        return parsed.href;
+      } catch (_) {
+        return String(url).replace(/\/index\.html(?=\/files-portal(?:\/|$))/ig, '');
+      }
+    }
+
+    var originalPath = location.pathname || '';
+    var path = cleanPath(originalPath);
+
+    // Canonicalize old links once, then prevent Angular/history navigation
+    // from ever putting /index.html back before /files-portal/.
+    if (history) {
+      var nativePushState = history.pushState && history.pushState.bind(history);
+      var nativeReplaceState = history.replaceState && history.replaceState.bind(history);
+
+      if (nativePushState) {
+        history.pushState = function (state, title, url) {
+          return nativePushState(state, title, cleanHistoryUrl(url));
+        };
+      }
+      if (nativeReplaceState) {
+        history.replaceState = function (state, title, url) {
+          return nativeReplaceState(state, title, cleanHistoryUrl(url));
+        };
+      }
+
+      if (path !== originalPath && nativeReplaceState) {
+        nativeReplaceState(history.state, '', path + location.search + location.hash);
+      }
+    }
+
+    var marker = '/files-portal/';
+    var markerIndex = path.indexOf(marker);
+    var deploymentBase;
+    if (markerIndex >= 0) {
+      deploymentBase = path.slice(0, markerIndex);
+    } else {
+      deploymentBase = path.replace(/\/+$/, '');
+    }
+    var deploymentRoot = (deploymentBase || '') + '/';
+    window.__CLONED_DEPLOYMENT_BASE__ = deploymentBase;
+    window.__UNIFIED_DEPLOYMENT_ROOT__ = deploymentRoot;
+
+    var base = document.getElementById('app-base') || document.querySelector('base');
+    if (base) base.setAttribute('href', deploymentRoot);
+  } catch (error) {
+    console.error('[bootstrap]', error);
+  }
+})();
+</script><script>
+(function () {
+  var resources = {"https://es.jcci.org.sa/favicon.ico":"assets/favicon.ico","https://es.jcci.org.sa/runtime.0edfa9919ae05899.js":"js/runtime.0edfa9919ae05899.js","https://es.jcci.org.sa/polyfills.42f2273b4b2ad4d5.js":"js/polyfills.42f2273b4b2ad4d5.js","https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css":"css/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css","https://es.jcci.org.sa/styles.0061646dd92f4e03.css":"css/styles.0061646dd92f4e03.css","https://es.jcci.org.sa/scripts.fde64f2b91915339.js":"js/scripts.fde64f2b91915339.js","https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js":"js/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js","https://es.jcci.org.sa/Tajawal-Regular.c926d31bbb85e9a4.otf":"fonts/Tajawal-Regular.c926d31bbb85e9a4.otf","https://es.jcci.org.sa/main.322028314028c71d.js":"js/main.322028314028c71d.js","https://es.jcci.org.sa/assets/i18n/en.json":"assets/i18n/en.json","https://es.jcci.org.sa/assets/i18n/ar.json":"assets/i18n/ar.json","https://es.jcci.org.sa/assets/images/chambers-logo/JeddahChamber-WhiteLogo.svg":"assets/images/chambers-logo/JeddahChamber-WhiteLogo.svg","https://flags.code.is.sa/871/client/features":"api/871/client/features.json","blob:https://es.jcci.org.sa/7d7f91bc-9038-4228-9213-2289efe2c952":"api/https/es.jcci.org.sa/7d7f91bc-9038-4228-9213-2289efe2c952.json","https://es.jcci.org.sa/Tajawal-Bold.a38b4347c7faf820.otf":"fonts/Tajawal-Bold.a38b4347c7faf820.otf","https://es.jcci.org.sa/fa-duotone-900.fea2360d17b96439.woff2":"fonts/fa-duotone-900.fea2360d17b96439.woff2","blob:https://es.jcci.org.sa/6109140d-2e5c-4cb2-ab21-005f356aad26":"api/https/es.jcci.org.sa/6109140d-2e5c-4cb2-ab21-005f356aad26.json","https://es.jcci.org.sa/files-portal/U2FsdGVkX1_RJ5EuawYTfCX6-e8APfHJTQMmZsx4i1vd_9PyyxqkpCK2WeB_4UjnXBTXvWvZebgiQkSGw5nFn9LTfQ":"files-portal/U2FsdGVkX1_RJ5EuawYTfCX6-e8APfHJTQMmZsx4i1vd_9PyyxqkpCK2WeB_4UjnXBTXvWvZebgiQkSGw5nFn9LTfQ/index.html","https://es.jcci.org.sa/":"index.html","https://es.jcci.org.sa/assets/js/intercom.js":"js/assets/js/intercom.js","https://es.jcci.org.sa/assets/lib/js/pdf.js":"js/assets/lib/js/pdf.js","https://es.jcci.org.sa/Tajawal-Light.66722e09412e4348.otf":"fonts/Tajawal-Light.66722e09412e4348.otf","https://es.jcci.org.sa/Tajawal-Medium.a87ad9852ed65aa3.otf":"fonts/Tajawal-Medium.a87ad9852ed65aa3.otf","https://es.jcci.org.sa/Tajawal-ExtraBold.80a3e7cd41c32377.otf":"fonts/Tajawal-ExtraBold.80a3e7cd41c32377.otf","https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap":"css/css2_q_family-Roboto_wght_300_400_500-display-swap.css","https://fonts.googleapis.com/icon?family=Material+Icons":"css/icon_q_family-Material_Icons.css","https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot?v=4.7.0":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.eot","https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot?":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.eot","https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.woff2","https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff?v=4.7.0":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.woff","https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf?v=4.7.0":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.ttf","https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg?v=4.7.0":"images/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.svg","https://es.jcci.org.sa/fa-brands-400.30c252b60a43c17c.woff2":"fonts/fa-brands-400.30c252b60a43c17c.woff2","https://es.jcci.org.sa/fa-brands-400.04639e675f3ad19d.ttf":"fonts/fa-brands-400.04639e675f3ad19d.ttf","https://es.jcci.org.sa/fa-duotone-900.8372a4c6bd8644ad.ttf":"fonts/fa-duotone-900.8372a4c6bd8644ad.ttf","https://es.jcci.org.sa/fa-light-300.95275b21d02271e3.woff2":"fonts/fa-light-300.95275b21d02271e3.woff2","https://es.jcci.org.sa/fa-light-300.022a57013d7b3353.ttf":"fonts/fa-light-300.022a57013d7b3353.ttf","https://es.jcci.org.sa/fa-regular-400.8576d7cefc8b8922.woff2":"fonts/fa-regular-400.8576d7cefc8b8922.woff2","https://es.jcci.org.sa/fa-regular-400.8a40ed10e643ee0a.ttf":"fonts/fa-regular-400.8a40ed10e643ee0a.ttf","https://es.jcci.org.sa/fa-solid-900.bfed0292989d50b8.woff2":"fonts/fa-solid-900.bfed0292989d50b8.woff2","https://es.jcci.org.sa/fa-solid-900.464668fa4a5ecf05.ttf":"fonts/fa-solid-900.464668fa4a5ecf05.ttf","https://es.jcci.org.sa/fa-thin-100.534107bfe356b8f0.woff2":"fonts/fa-thin-100.534107bfe356b8f0.woff2","https://es.jcci.org.sa/fa-thin-100.a80668846623824d.ttf":"fonts/fa-thin-100.a80668846623824d.ttf","https://es.jcci.org.sa/icon-info.8a3c51aae01eccf6.png":"images/icon-info.8a3c51aae01eccf6.png","https://es.jcci.org.sa/assets/images/icons/input_loader.svg":"assets/images/icons/input_loader.svg","https://es.jcci.org.sa/pointer-icon.f1f1dfd3dbaf8f08.png":"images/pointer-icon.f1f1dfd3dbaf8f08.png","https://es.jcci.org.sa/login-image.7143793c0b0d82d2.png":"images/login-image.7143793c0b0d82d2.png","https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabWmT.ttf":"fonts/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabWmT.ttf","https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbWmT.ttf":"fonts/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbWmT.ttf","https://fonts.gstatic.com/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bWmT.ttf":"fonts/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bWmT.ttf","https://fonts.gstatic.com/s/materialicons/v145/flUhRq6tzZclQEJ-Vdg-IuiaDsNZ.ttf":"fonts/s/materialicons/v145/flUhRq6tzZclQEJ-Vdg-IuiaDsNZ.ttf"};
+  var basenameMatches = {"favicon.ico":"assets/favicon.ico","runtime.0edfa9919ae05899.js":"js/runtime.0edfa9919ae05899.js","polyfills.42f2273b4b2ad4d5.js":"js/polyfills.42f2273b4b2ad4d5.js","font-awesome.min.css":"css/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css","styles.0061646dd92f4e03.css":"css/styles.0061646dd92f4e03.css","scripts.fde64f2b91915339.js":"js/scripts.fde64f2b91915339.js","html2pdf.bundle.js":"js/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js","Tajawal-Regular.c926d31bbb85e9a4.otf":"fonts/Tajawal-Regular.c926d31bbb85e9a4.otf","main.322028314028c71d.js":"js/main.322028314028c71d.js","en.json":"assets/i18n/en.json","ar.json":"assets/i18n/ar.json","JeddahChamber-WhiteLogo.svg":"assets/images/chambers-logo/JeddahChamber-WhiteLogo.svg","features":"api/871/client/features.json","7d7f91bc-9038-4228-9213-2289efe2c952":"api/https/es.jcci.org.sa/7d7f91bc-9038-4228-9213-2289efe2c952.json","Tajawal-Bold.a38b4347c7faf820.otf":"fonts/Tajawal-Bold.a38b4347c7faf820.otf","fa-duotone-900.fea2360d17b96439.woff2":"fonts/fa-duotone-900.fea2360d17b96439.woff2","6109140d-2e5c-4cb2-ab21-005f356aad26":"api/https/es.jcci.org.sa/6109140d-2e5c-4cb2-ab21-005f356aad26.json","U2FsdGVkX1_RJ5EuawYTfCX6-e8APfHJTQMmZsx4i1vd_9PyyxqkpCK2WeB_4UjnXBTXvWvZebgiQkSGw5nFn9LTfQ":"files-portal/U2FsdGVkX1_RJ5EuawYTfCX6-e8APfHJTQMmZsx4i1vd_9PyyxqkpCK2WeB_4UjnXBTXvWvZebgiQkSGw5nFn9LTfQ/index.html","intercom.js":"js/assets/js/intercom.js","pdf.js":"js/assets/lib/js/pdf.js","Tajawal-Light.66722e09412e4348.otf":"fonts/Tajawal-Light.66722e09412e4348.otf","Tajawal-Medium.a87ad9852ed65aa3.otf":"fonts/Tajawal-Medium.a87ad9852ed65aa3.otf","Tajawal-ExtraBold.80a3e7cd41c32377.otf":"fonts/Tajawal-ExtraBold.80a3e7cd41c32377.otf","css2":"css/css2_q_family-Roboto_wght_300_400_500-display-swap.css","icon":"css/icon_q_family-Material_Icons.css","fontawesome-webfont.eot":null,"fontawesome-webfont.woff2":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.woff2","fontawesome-webfont.woff":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.woff","fontawesome-webfont.ttf":"fonts/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.ttf","fontawesome-webfont.svg":"images/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont_q_v-4.7.0.svg","fa-brands-400.30c252b60a43c17c.woff2":"fonts/fa-brands-400.30c252b60a43c17c.woff2","fa-brands-400.04639e675f3ad19d.ttf":"fonts/fa-brands-400.04639e675f3ad19d.ttf","fa-duotone-900.8372a4c6bd8644ad.ttf":"fonts/fa-duotone-900.8372a4c6bd8644ad.ttf","fa-light-300.95275b21d02271e3.woff2":"fonts/fa-light-300.95275b21d02271e3.woff2","fa-light-300.022a57013d7b3353.ttf":"fonts/fa-light-300.022a57013d7b3353.ttf","fa-regular-400.8576d7cefc8b8922.woff2":"fonts/fa-regular-400.8576d7cefc8b8922.woff2","fa-regular-400.8a40ed10e643ee0a.ttf":"fonts/fa-regular-400.8a40ed10e643ee0a.ttf","fa-solid-900.bfed0292989d50b8.woff2":"fonts/fa-solid-900.bfed0292989d50b8.woff2","fa-solid-900.464668fa4a5ecf05.ttf":"fonts/fa-solid-900.464668fa4a5ecf05.ttf","fa-thin-100.534107bfe356b8f0.woff2":"fonts/fa-thin-100.534107bfe356b8f0.woff2","fa-thin-100.a80668846623824d.ttf":"fonts/fa-thin-100.a80668846623824d.ttf","icon-info.8a3c51aae01eccf6.png":"images/icon-info.8a3c51aae01eccf6.png","input_loader.svg":"assets/images/icons/input_loader.svg","pointer-icon.f1f1dfd3dbaf8f08.png":"images/pointer-icon.f1f1dfd3dbaf8f08.png","login-image.7143793c0b0d82d2.png":"images/login-image.7143793c0b0d82d2.png","KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabWmT.ttf":"fonts/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuaabWmT.ttf","KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbWmT.ttf":"fonts/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbWmT.ttf","KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bWmT.ttf":"fonts/s/roboto/v51/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWub2bWmT.ttf","flUhRq6tzZclQEJ-Vdg-IuiaDsNZ.ttf":"fonts/s/materialicons/v145/flUhRq6tzZclQEJ-Vdg-IuiaDsNZ.ttf"};
+  var sourcePageUrl = "https://es.jcci.org.sa/files-portal/U2FsdGVkX1_RJ5EuawYTfCX6-e8APfHJTQMmZsx4i1vd_9PyyxqkpCK2WeB_4UjnXBTXvWvZebgiQkSGw5nFn9LTfQ";
+
+  function normalizeAssetPath(value) {
+    if (typeof value !== 'string' || !value) return value;
+    var raw = value.trim();
+    try {
+      var original = new URL(raw, sourcePageUrl); original.hash = '';
+      var file = resources[original.href];
+      if (!file) {
+        var name = original.pathname.split('/').pop();
+        file = name && basenameMatches[name] || null;
+      }
+      if (file) return (window.__CLONED_DEPLOYMENT_BASE__ || '') + '/' + file;
+    } catch (_) {}
+    return value;
+  }
+
+  function resolveCss(value) {
+    if (typeof value !== 'string') return value;
+    return value.replace(/url\((['"]?)(.*?)\1\)/gi, function (match, quote, raw) {
+      var resolved = normalizeAssetPath(raw.trim());
+      return resolved === raw.trim() ? match : 'url(' + quote + resolved + quote + ')';
+    });
+  }
+
+  var setAttribute = Element.prototype.setAttribute;
+  Element.prototype.setAttribute = function (name, value) {
+    var attribute = String(name).toLowerCase();
+    if (attribute === 'src' || attribute === 'href' || attribute === 'poster' || attribute === 'data') value = normalizeAssetPath(value);
+    if (attribute === 'style') value = resolveCss(value);
+    return setAttribute.call(this, name, value);
+  };
+
+  [['HTMLImageElement', 'src'], ['HTMLScriptElement', 'src'], ['HTMLLinkElement', 'href'], ['HTMLSourceElement', 'src'], ['HTMLVideoElement', 'poster'], ['HTMLAudioElement', 'src']].forEach(function (entry) {
+    var Type = window[entry[0]];
+    if (!Type) return;
+    var descriptor = Object.getOwnPropertyDescriptor(Type.prototype, entry[1]);
+    if (!descriptor || !descriptor.set || !descriptor.get) return;
+    Object.defineProperty(Type.prototype, entry[1], {
+      configurable: true,
+      enumerable: descriptor.enumerable,
+      get: descriptor.get,
+      set: function (value) { return descriptor.set.call(this, normalizeAssetPath(value)); }
+    });
+  });
+
+  var originalFetch = window.fetch && window.fetch.bind(window);
+  if (originalFetch) window.fetch = function (input, init) {
+    if (typeof input === 'string') input = normalizeAssetPath(input);
+    else if (input && input.url) input = new Request(normalizeAssetPath(input.url), input);
+    return originalFetch(input, init);
+  };
+
+  var open = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (method, url) {
+    arguments[1] = normalizeAssetPath(url);
+    return open.apply(this, arguments);
+  };
+
+  var setProperty = CSSStyleDeclaration.prototype.setProperty;
+  CSSStyleDeclaration.prototype.setProperty = function (name, value, priority) {
+    return setProperty.call(this, name, resolveCss(value), priority);
+  };
+})();
+</script><script src="js/document-router.js"></script><style>/* DOCUMENT_VIEWPORT_SCROLLBAR_FIX */
+html, body { height: 100% !important; }
+body { margin: 0 !important; }
+</style>
+    <meta charset="utf-8">
+    <title>
+      بوابة خدمات غرفة جدة
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="css/css2_q_family-Roboto_wght_300_400_500-display-swap.css" rel="stylesheet">
+    <link href="css/icon_q_family-Material_Icons.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="css/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <script src="js/assets/js/intercom.js"></script> -->
+  <!-- hidden the intercom script -->
+<style>@charset "UTF-8";:root{--bs-blue:#0d6efd;--bs-indigo:#6610f2;--bs-purple:#6f42c1;--bs-pink:#d63384;--bs-red:#dc3545;--bs-orange:#fd7e14;--bs-yellow:#ffc107;--bs-green:#198754;--bs-teal:#20c997;--bs-cyan:#0dcaf0;--bs-black:#000;--bs-white:#fff;--bs-gray:#6c757d;--bs-gray-dark:#343a40;--bs-gray-100:#f8f9fa;--bs-gray-200:#e9ecef;--bs-gray-300:#dee2e6;--bs-gray-400:#ced4da;--bs-gray-500:#adb5bd;--bs-gray-600:#6c757d;--bs-gray-700:#495057;--bs-gray-800:#343a40;--bs-gray-900:#212529;--bs-primary:#0d6efd;--bs-secondary:#6c757d;--bs-success:#198754;--bs-info:#0dcaf0;--bs-warning:#ffc107;--bs-danger:#dc3545;--bs-light:#f8f9fa;--bs-dark:#212529;--bs-primary-rgb:13,110,253;--bs-secondary-rgb:108,117,125;--bs-success-rgb:25,135,84;--bs-info-rgb:13,202,240;--bs-warning-rgb:255,193,7;--bs-danger-rgb:220,53,69;--bs-light-rgb:248,249,250;--bs-dark-rgb:33,37,41;--bs-primary-text-emphasis:#052c65;--bs-secondary-text-emphasis:#2b2f32;--bs-success-text-emphasis:#0a3622;--bs-info-text-emphasis:#055160;--bs-warning-text-emphasis:#664d03;--bs-danger-text-emphasis:#58151c;--bs-light-text-emphasis:#495057;--bs-dark-text-emphasis:#495057;--bs-primary-bg-subtle:#cfe2ff;--bs-secondary-bg-subtle:#e2e3e5;--bs-success-bg-subtle:#d1e7dd;--bs-info-bg-subtle:#cff4fc;--bs-warning-bg-subtle:#fff3cd;--bs-danger-bg-subtle:#f8d7da;--bs-light-bg-subtle:#fcfcfd;--bs-dark-bg-subtle:#ced4da;--bs-primary-border-subtle:#9ec5fe;--bs-secondary-border-subtle:#c4c8cb;--bs-success-border-subtle:#a3cfbb;--bs-info-border-subtle:#9eeaf9;--bs-warning-border-subtle:#ffe69c;--bs-danger-border-subtle:#f1aeb5;--bs-light-border-subtle:#e9ecef;--bs-dark-border-subtle:#adb5bd;--bs-white-rgb:255,255,255;--bs-black-rgb:0,0,0;--bs-font-sans-serif:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";--bs-font-monospace:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--bs-gradient:linear-gradient(180deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, 0));--bs-body-font-family:var(--bs-font-sans-serif);--bs-body-font-size:1rem;--bs-body-font-weight:400;--bs-body-line-height:1.5;--bs-body-color:#212529;--bs-body-color-rgb:33,37,41;--bs-body-bg:#fff;--bs-body-bg-rgb:255,255,255;--bs-emphasis-color:#000;--bs-emphasis-color-rgb:0,0,0;--bs-secondary-color:rgba(33, 37, 41, .75);--bs-secondary-color-rgb:33,37,41;--bs-secondary-bg:#e9ecef;--bs-secondary-bg-rgb:233,236,239;--bs-tertiary-color:rgba(33, 37, 41, .5);--bs-tertiary-color-rgb:33,37,41;--bs-tertiary-bg:#f8f9fa;--bs-tertiary-bg-rgb:248,249,250;--bs-heading-color:inherit;--bs-link-color:#0d6efd;--bs-link-color-rgb:13,110,253;--bs-link-decoration:underline;--bs-link-hover-color:#0a58ca;--bs-link-hover-color-rgb:10,88,202;--bs-code-color:#d63384;--bs-highlight-color:#212529;--bs-highlight-bg:#fff3cd;--bs-border-width:1px;--bs-border-style:solid;--bs-border-color:#dee2e6;--bs-border-color-translucent:rgba(0, 0, 0, .175);--bs-border-radius:.375rem;--bs-border-radius-sm:.25rem;--bs-border-radius-lg:.5rem;--bs-border-radius-xl:1rem;--bs-border-radius-xxl:2rem;--bs-border-radius-2xl:var(--bs-border-radius-xxl);--bs-border-radius-pill:50rem;--bs-box-shadow:0 .5rem 1rem rgba(0, 0, 0, .15);--bs-box-shadow-sm:0 .125rem .25rem rgba(0, 0, 0, .075);--bs-box-shadow-lg:0 1rem 3rem rgba(0, 0, 0, .175);--bs-box-shadow-inset:inset 0 1px 2px rgba(0, 0, 0, .075);--bs-focus-ring-width:.25rem;--bs-focus-ring-opacity:.25;--bs-focus-ring-color:rgba(13, 110, 253, .25);--bs-form-valid-color:#198754;--bs-form-valid-border-color:#198754;--bs-form-invalid-color:#dc3545;--bs-form-invalid-border-color:#dc3545}*,:after,:before{box-sizing:border-box}@media (prefers-reduced-motion:no-preference){:root{scroll-behavior:smooth}}body{margin:0;font-family:var(--bs-body-font-family);font-size:var(--bs-body-font-size);font-weight:var(--bs-body-font-weight);line-height:var(--bs-body-line-height);color:var(--bs-body-color);text-align:var(--bs-body-text-align);background-color:var(--bs-body-bg);-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}:root{--bs-breakpoint-xs:0;--bs-breakpoint-sm:576px;--bs-breakpoint-md:768px;--bs-breakpoint-lg:992px;--bs-breakpoint-xl:1200px;--bs-breakpoint-xxl:1400px}@charset "UTF-8";:root{--swiper-theme-color:#007aff}:root{--swiper-navigation-size:44px}@font-face{font-family:Tajawal;src:url("fonts/Tajawal-Light.66722e09412e4348.otf");font-weight:300}@font-face{font-family:Tajawal;src:url("fonts/Tajawal-Regular.c926d31bbb85e9a4.otf");font-weight:400}@font-face{font-family:Tajawal;src:url("fonts/Tajawal-Medium.a87ad9852ed65aa3.otf");font-weight:500}@font-face{font-family:Tajawal;src:url("fonts/Tajawal-Bold.a38b4347c7faf820.otf");font-weight:700}@font-face{font-family:Tajawal;src:url("fonts/Tajawal-ExtraBold.80a3e7cd41c32377.otf");font-weight:800}*,*:focus{outline:none!important}html{font-size:62.5%;overflow-y:auto;overflow-x:hidden}body{font-family:"Tajawal",Sans-Serif;font-weight:400;font-size:1.4rem;color:#272b2e;text-align:start;overflow-y:hidden}:root{--main-color:#173C59;--main-color-decimal:#78bbc5;--thead-bg-color:#E9EAEC}</style><link rel="stylesheet" href="css/styles.0061646dd92f4e03.css" media="all" onload="this.media='all'"><noscript><link rel="stylesheet" href="css/styles.0061646dd92f4e03.css"></noscript><style type="text/css"></style><style>[_nghost-fxm-c76]{display:block;width:100vw;height:100vh;background:rgba(0,0,0,.4)}[_nghost-fxm-c76]   .pdfViewer-wrapper[_ngcontent-fxm-c76]{height:calc(100% - 50px)}[_nghost-fxm-c76]   .pdfViewer-wrapper[_ngcontent-fxm-c76]   .container-lg[_ngcontent-fxm-c76]{height:100%}[_nghost-fxm-c76]   .pdfViewer-wrapper[_ngcontent-fxm-c76]   .image-wrapper[_ngcontent-fxm-c76]{display:flex;height:100%;align-items:center;justify-content:center;background-color:#fff}[_nghost-fxm-c76]   .pdfViewer-wrapper[_ngcontent-fxm-c76]   .image-wrapper[_ngcontent-fxm-c76]   img[_ngcontent-fxm-c76]{object-fit:contain;max-height:100%}[_nghost-fxm-c76]   .request-details[_ngcontent-fxm-c76]{background-color:#e9eaec;padding:30px}[_nghost-fxm-c76]   .request-details[_ngcontent-fxm-c76]   .cols-responsive[_ngcontent-fxm-c76]{display:flex;flex-wrap:wrap;align-items:center}[_nghost-fxm-c76]   .request-details[_ngcontent-fxm-c76]   .cols-responsive[_ngcontent-fxm-c76]   .col-item[_ngcontent-fxm-c76]{padding:0 5px;flex-basis:14%;margin-bottom:2.4rem;min-width:140px}[_nghost-fxm-c76]   .request-details[_ngcontent-fxm-c76]   .form-group[_ngcontent-fxm-c76]{margin-bottom:0}[_nghost-fxm-c76]   .request-details[_ngcontent-fxm-c76]   .form-group[_ngcontent-fxm-c76]   p[_ngcontent-fxm-c76]{margin-bottom:0;font-size:1.6rem}.btn-success[_ngcontent-fxm-c76]{padding:0;width:45px;aspect-ratio:1/1;display:flex;justify-content:center;align-items:center}.bg-gradient-1[_ngcontent-fxm-c76]{background:linear-gradient(-130deg,#4062ad 20.17%,#0a925d 77.86%,#0a925d 77.93%)}.title[_ngcontent-fxm-c76]{transform:translateY(-50px)}.btn-dark[_ngcontent-fxm-c76]{position:absolute;margin:1rem;bottom:0;border:none;border-radius:50%;height:45px;width:45px;overflow:hidden;padding:0;display:flex;align-items:center;justify-content:center;font-size:x-large;left:0;box-shadow:0 0 #000;transform:scale(1);animation:pulse 2s infinite}@keyframes pulse{0%{transform:scale(.95);box-shadow:0 0 #000000b3}70%{transform:scale(1);box-shadow:0 0 0 10px #0000}to{transform:scale(.95);box-shadow:0 0 #0000}}.offcanvas-header[_ngcontent-fxm-c76]{padding:1.5rem;display:flex;justify-content:space-between;align-items:center;border:0}.offcanvas-header[_ngcontent-fxm-c76]   .modal-title[_ngcontent-fxm-c76]{color:#272b2e;font-size:2rem;font-weight:700;margin-bottom:.8rem;max-width:90%}.offcanvas-header[_ngcontent-fxm-c76]   .title-hint[_ngcontent-fxm-c76]{color:#939ca5;font-size:1.6rem;font-weight:500;margin-bottom:0}.offcanvas-header[_ngcontent-fxm-c76]   .close[_ngcontent-fxm-c76]{padding:0;margin:0;border:0;background-color:transparent}[dir=ltr][_ngcontent-fxm-c76]   .offcanvas-header[_ngcontent-fxm-c76]   .close[_ngcontent-fxm-c76]{left:auto;right:2.4rem}.offcanvas-header[_ngcontent-fxm-c76]   .close[_ngcontent-fxm-c76]   svg[_ngcontent-fxm-c76]{stroke:#d8d9dc;fill:#fff}.offcanvas-header[_ngcontent-fxm-c76]   .close[_ngcontent-fxm-c76]:hover   svg[_ngcontent-fxm-c76]{stroke:#e76666}.offcanvas-header.custom-style[_ngcontent-fxm-c76]{display:flex;align-items:center;justify-content:flex-start;background-color:#3f5fa014}.offcanvas-header.custom-style[_ngcontent-fxm-c76]   .header-icon[_ngcontent-fxm-c76]{background-color:#fff;padding:1.9rem;margin-inline-end:1.6rem;border-radius:2.4rem}.offcanvas-header.custom-style[_ngcontent-fxm-c76]   .modal-title[_ngcontent-fxm-c76]{color:#111}.offcanvas-header.custom-style[_ngcontent-fxm-c76]   .close[_ngcontent-fxm-c76]   svg[_ngcontent-fxm-c76]{stroke:#86888c;fill:transparent}.expired-strip[_ngcontent-fxm-c76]{background-color:#d9534f;color:#fff;text-align:center;font-weight:700;padding:10px;font-size:1rem;z-index:999}.pdf-container[_ngcontent-fxm-c76]{position:relative}.expired-overlay[_ngcontent-fxm-c76]{position:absolute;top:240px;left:0;right:0;background-color:#dc3545e6;color:#fff;text-align:center;font-weight:700;padding:10px;z-index:1000;pointer-events:none}.expired-diagonal-strip[_ngcontent-fxm-c76]{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);background-color:#dc3545d9;color:#fff;font-size:2rem;font-weight:700;padding:1rem 5rem;z-index:1000;pointer-events:none;box-shadow:0 0 10px #0000004d;border-radius:4px;-webkit-user-select:none;user-select:none;white-space:nowrap}</style><style>[_nghost-fxm-c72]   .loading-spinner[_ngcontent-fxm-c72]{position:fixed;inset:0;width:100vw;height:100vh;background-color:#fff;z-index:2025}[_nghost-fxm-c72]   .loading-spinner.solid-bg[_ngcontent-fxm-c72]{background-color:#fff}[_nghost-fxm-c72]   .loading-spinner__logo[_ngcontent-fxm-c72]{display:flex;align-items:center;justify-content:center;width:40rem;height:40rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-user-select:none;user-select:none}[_nghost-fxm-c72]   .loading-spinner__logo[_ngcontent-fxm-c72]   img[_ngcontent-fxm-c72]{-webkit-user-select:none;user-select:none}@media all and (max-width: 1440px){[_nghost-fxm-c72]   .loading-spinner__logo[_ngcontent-fxm-c72]{width:30rem;height:30rem}}@media all and (max-width: 767px){[_nghost-fxm-c72]   #splash-screen__logo[_ngcontent-fxm-c72]{width:250px;height:250px}[_nghost-fxm-c72]   .loading-spinner__logo[_ngcontent-fxm-c72]{width:20rem;height:20rem}}.splash-logo[_ngcontent-fxm-c72]{left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;position:absolute;width:80px}.splash-loader[_ngcontent-fxm-c72], .splash-loader[_ngcontent-fxm-c72]:before, .splash-loader[_ngcontent-fxm-c72]:after{left:50%;top:50%;margin-left:-60px;margin-top:-60px;position:absolute;vertical-align:middle;background:linear-gradient(130deg,#4062AD 20.17%,#0A925D 77.86%,#0A925D 77.93%);width:120px;height:120px;border-radius:50%;z-index:1}.splash-loader[_ngcontent-fxm-c72]{background:transparent}.splash-loader[_ngcontent-fxm-c72]:before{content:"";animation:bounce 1.5s infinite}.splash-loader[_ngcontent-fxm-c72]:after{content:"";animation:bounce 1.5s -.4s infinite}@keyframes bounce{0%{transform:scale(.3);-webkit-transform:scale(.3);opacity:1}to{transform:scale(2);-webkit-transform:scale(2);opacity:0}}.splash-screen[_ngcontent-fxm-c72]{background-color:#000000b3;height:100%;position:fixed;width:100vw;height:100vh;top:0;z-index:3000}</style></head>
+
+<body>
+  <app-root></app-root>
+  <!-- IMPORTING html2pdf PLUGIN FOR FROALA EDITOR PDF EXPORT -->
+  <script type="text/javascript" src="js/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+  <!-- <script src="js/assets/lib/js/pdf.js"></script> -->
+<script src="js/runtime.0edfa9919ae05899.js" type="module"></script><script src="js/polyfills.42f2273b4b2ad4d5.js" type="module"></script><script src="js/scripts.fde64f2b91915339.js" defer=""></script><script src="js/main.322028314028c71d.js" type="module"></script>
+
+
+<svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;"><defs id="SvgjsDefs1002"></defs><polyline id="SvgjsPolyline1003" points="0,0"></polyline><path id="SvgjsPath1004" d="M0 0 "></path></svg><svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;"><defs id="SvgjsDefs1002"></defs><polyline id="SvgjsPolyline1003" points="0,0"></polyline><path id="SvgjsPath1004" d="M0 0 "></path></svg></body></html>
