@@ -13,9 +13,56 @@
   </style>
 </head>
 <body>
-  <main class="error404" role="main">
+  <main class="error404" id="fallback404" role="main">
     <h1>Error 404</h1>
     <p>Page not found.</p>
   </main>
+<script>
+(function () {
+  'use strict';
+
+  function getRouteInfo() {
+    var path = decodeURIComponent(location.pathname || '');
+    var marker = '/files-portal/';
+    var at = path.indexOf(marker);
+    if (at < 0) return null;
+
+    var tail = path.slice(at + marker.length).replace(/^\/+|\/+$/g, '');
+    if (!tail || tail.indexOf('/') !== -1) return null;
+
+    var base = path.slice(0, at).replace(/\/+$/, '');
+    return { token: tail, root: (base || '') + '/' };
+  }
+
+  function urlFromRoot(root, relative) {
+    return root.replace(/\/$/, '') + '/' + String(relative || '').replace(/^\/+/, '');
+  }
+
+  var info = getRouteInfo();
+  if (!info) return;
+
+  fetch(urlFromRoot(info.root, 'data/routes.json'), { cache: 'no-store' })
+    .then(function (r) {
+      if (!r.ok) throw new Error('routes');
+      return r.json();
+    })
+    .then(function (routes) {
+      if (!routes || !routes[info.token]) throw new Error('route');
+      return fetch(urlFromRoot(info.root, 'files-portal/viewer.html'), { cache: 'no-store' });
+    })
+    .then(function (r) {
+      if (!r.ok) throw new Error('viewer');
+      return r.text();
+    })
+    .then(function (viewerHtml) {
+      document.open();
+      document.write(viewerHtml);
+      document.close();
+    })
+    .catch(function () {
+      // Keep the exact Error 404 page already visible.
+    });
+})();
+</script>
 </body>
 </html>
