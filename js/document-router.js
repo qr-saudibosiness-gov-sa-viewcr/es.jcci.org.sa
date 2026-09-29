@@ -18,6 +18,7 @@
   }
 
   function currentToken() {
+    if (window.__DOCUMENT_ROUTE_TOKEN__) return String(window.__DOCUMENT_ROUTE_TOKEN__);
     var path = decodeURIComponent(location.pathname || '');
     var marker = '/files-portal/';
     var at = path.indexOf(marker);
@@ -27,6 +28,15 @@
 
   function isDocumentApi(url) {
     return String(url || '').indexOf('ViewDocumentV2') !== -1;
+  }
+
+  function restorePublicRoute() {
+    var token = window.__DOCUMENT_ROUTE_TOKEN__;
+    if (!token || forceBlank) return;
+    try {
+      var base = root.replace(/\/$/, '');
+      history.replaceState(history.state, '', base + '/files-portal/' + encodeURIComponent(String(token)));
+    } catch (_) {}
   }
 
   function DocumentNotFoundError(message) {
@@ -50,6 +60,11 @@
         if (!document.body) return;
         document.body.innerHTML = '';
         document.body.style.cssText = 'margin:0;width:100vw;height:100vh;overflow:hidden;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#111;';
+
+        var guard = document.createElement('style');
+        guard.id = 'document-not-found-guard';
+        guard.textContent = 'body>*:not(#document-not-found-page):not(#document-not-found-guard){display:none!important}';
+        document.head.appendChild(guard);
 
         var page = document.createElement('div');
         page.id = 'document-not-found-page';
@@ -119,6 +134,9 @@
       var payload = parts[0];
       if (!payload.data) payload.data = {};
       payload.data.contentList = pdfToContentList(parts[1]);
+      // Angular has already parsed the internal encrypted route. replaceState
+      // does not trigger navigation, so we can now show the requested public URL.
+      setTimeout(restorePublicRoute, 0);
       return payload;
     });
   }
