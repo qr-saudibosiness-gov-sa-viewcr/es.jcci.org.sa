@@ -1,0 +1,19 @@
+{
+  "succeeded": true,
+  "message": "",
+  "errors": [],
+  "data": {
+    "documentNumber": "11960996",
+    "documentStatus": 1,
+    "documentStatusTitle": "سارية",
+    "facilityTitle": "شركة الهلالي للتجاره والمقاولات",
+    "created": "2026-09-30T00:45:05.219369",
+    "contentList": [],
+    "subscriptionNumber": "709892",
+    "unified700Number": "7001636948",
+    "fileType": ".pdf",
+    "applicantName": "احمد عبدالله محمد الحداد المصعبي",
+    "facilityCrNumber": 5800004732,
+    "serviceId": 11
+  }
+}
